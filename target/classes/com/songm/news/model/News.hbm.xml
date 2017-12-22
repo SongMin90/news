@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class name="com.songm.news.model.News" table="news">
+         <id name="news_id" column="news_id">
+             <generator class="native"></generator>
+         </id>
+
+         <property name="news_title" column="news_title"></property>
+         <property name="news_datetime" column="news_datetime"></property>
+         <property name="news_content" column="news_content" type="text"></property>
+         <property name="news_content_md" column="news_content_md" type="text"></property>
+         <property name="news_content_html" column="news_content_html" type="text"></property>
+         <property name="news_ctr" column="news_ctr"></property>
+         <property name="news_number" column="news_number"></property>
+
+         <many-to-one name="user" class="com.songm.news.model.User" column="user_news_id"></many-to-one>    
+         <set name="setComment" cascade="save-update,delete" inverse="true" batch-size="10">
+            <key column="news_comment_id"></key>
+            <one-to-many class="com.songm.news.model.Comment"/>
+         </set>
+         <!-- 表示新闻所属的栏目
+        	name属性：因为在新闻实体类使用Columns对象表示，写Columns名称
+        	class属性：Columns全路径
+        	column属性：外键名称
+        -->
+         <many-to-one name="columns" class="com.songm.news.model.Columns" column="columns_news_id"></many-to-one>  
+    </class>
+</hibernate-mapping>

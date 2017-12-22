@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-configuration PUBLIC 
+	"-//Hibernate/Hibernate Configuration DTD 3.0//EN" 
+	"http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd">
+	
+<hibernate-configuration>
+    <session-factory>  
+	    <!-- 2配置hibernate信息(可选)
+	    	 输出底层sql语句 -->
+	    <property name="hibernate.show_sql">true</property>
+	    <!-- 输出底层sql语句格式 -->
+	    <property name="hibernate.format_sql">true</property>
+	    <!-- hibernate帮创建表，需要配置后
+	    	update：如果已经有表，更新，如果没有，创建
+	    -->
+	    <property name="hibernate.hbm2ddl.auto">update</property>
+	    <!-- 配置数据库方言
+	    	在mysql里面实现分页 关键字limit，只能在mysql中
+	    -->
+	    <property name="hibernate.dialect">org.hibernate.dialect.MySQLDialect</property>
+	    <!-- 设置JDBC的隔离级别
+	    	Read Uncommitted: 1	~ 读未提交数据。隔离级别最差
+			Read Committed: 2 ~ 读已提交数据
+			Repeatable Read: 4 ~ 可重复读
+			Serializable: 8 ~ 串行化。隔离级别最高
+	    -->
+		<property name="hibernate.connection.isolation">2</property>
+		<!-- Session与Thread绑定 -->
+		<!-- <property name="current_session_context_class">thread</property> -->
+	    
+	    <!-- 3把映射文件放到核心配置文件中 -->
+	    <mapping resource="com/songm/news/model/Columns.hbm.xml"/>
+	    <mapping resource="com/songm/news/model/Comment.hbm.xml"/>
+	    <mapping resource="com/songm/news/model/Images.hbm.xml"/>
+	    <mapping resource="com/songm/news/model/News.hbm.xml"/>
+	    <mapping resource="com/songm/news/model/User.hbm.xml"/>   
+    </session-factory>
+</hibernate-configuration>

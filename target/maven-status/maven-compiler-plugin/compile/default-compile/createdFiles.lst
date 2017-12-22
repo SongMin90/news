@@ -1,0 +1,5 @@
+com\songm\news\model\Comment.class
+com\songm\news\model\Columns.class
+com\songm\news\model\User.class
+com\songm\news\model\Images.class
+com\songm\news\model\News.class

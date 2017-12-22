@@ -1,0 +1,114 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+	"-//Apache Software Foundation//DTD Struts Configuration 2.3//EN"
+	"http://struts.apache.org/dtds/struts-2.3.dtd">
+
+<struts>
+    <package name="news" namespace="/" extends="struts-default">
+        
+        <!-- 拦截器 -->  
+	    <interceptors>
+	        <!-- 自定义拦截器 -->
+	        <interceptor name="SafeInterceptor" class="com.songm.news.interceptor.SafeInterceptor">
+	            <param name="excludeMethods">toLogin,toRegister,toFpwd,checkName,checkEmail,login,register,findPwd,Logout,index,info,getLoginInfo,getAllColumns,getWebTitle,toUserInfo,findNews_ByU,addComment,beforeSearchNews</param><!-- 不拦截的方法-->
+	        </interceptor>
+	        <interceptor name="AdminSafeInterceptor" class="com.songm.news.interceptor.AdminSafeInterceptor">
+	            <param name="includeMethods"></param><!-- 拦截的方法 -->
+	        </interceptor>
+		
+		    <!-- 拦截器栈 -->
+			<interceptor-stack name="myStack">
+				<interceptor-ref name="SafeInterceptor"></interceptor-ref>
+				<interceptor-ref name="AdminSafeInterceptor"></interceptor-ref>
+				<interceptor-ref name="defaultStack"></interceptor-ref>
+			</interceptor-stack>
+		</interceptors>
+	    
+		<!-- 所有Action自动调用myStack 拦截器堆栈 -->
+		<default-interceptor-ref name="myStack"></default-interceptor-ref>
+        
+		<!-- 全局页面 -->
+	    <global-results>
+	        <!-- ajax -->
+            <result name="ajax_check" type="stream">
+                <param name="contentType">text/html</param>
+                <param name="inputStream">inputStream</param>
+            </result>
+            <!-- login -->
+            <result name="toLogin">/WEB-INF/mainPage/user/login.jsp</result>
+            <!-- 403页面 -->
+            <result name="to403">/WEB-INF/errorPage/403.jsp</result>
+            <!-- 404界面 -->
+            <result name="to404">/WEB-INF/errorPage/404.jsp</result>
+            <!-- 消息页面 -->
+	        <result name="messages">/WEB-INF/mainPage/messages.jsp</result>
+	        <!-- 前台主界面 -->
+	        <result name="toIndex">/WEB-INF/index.jsp</result>
+	    </global-results>
+	    
+        <!-- 后台主界面 -->
+        <action name="main">
+            <result>/WEB-INF/mainPage/main.jsp</result>
+        </action>
+        
+		<!-- user -->
+        <action name="user_*" class="userAction" method="{1}">
+            <result name="toMain" type="redirectAction">main</result>
+            <result name="toEdit">/WEB-INF/mainPage/user/edit.jsp</result>
+            <result name="toUserInfo">/WEB-INF/userInfo.jsp</result>
+            <!-- 普通用户 -->
+            <result name="toRegister">/WEB-INF/mainPage/user/register.jsp</result> 
+            <result name="toFpwd">/WEB-INF/mainPage/user/fpwd.jsp</result>
+            <result name="toOverview">/WEB-INF/mainPage/user/overview.jsp</result>
+            <!-- 管理员 -->
+            <result name="findAll">/WEB-INF/mainPage/user/findAll.jsp</result>
+            <result name="toAdd">/WEB-INF/mainPage/user/add.jsp</result>
+        </action>   
+      
+        <!-- news -->
+        <action name="news_*" class="newsAction" method="{1}">
+            <result name="toAdd">/WEB-INF/mainPage/news/add.jsp</result>
+            <result name="findAll">/WEB-INF/mainPage/news/findAll.jsp</result>
+            <result name="toEdit">/WEB-INF/mainPage/news/edit.jsp</result>
+            <result name="search_news">/WEB-INF/mainPage/news/searchNews.jsp</result>
+	    	<result name="beforeSearchNews">/WEB-INF/searchNews.jsp</result>
+        </action>
+        
+        <!-- columns -->
+        <action name="columns_*" class="columnsAction" method="{1}">
+            <result name="toAdd">/WEB-INF/mainPage/columns/add.jsp</result>
+            <result name="findAll">/WEB-INF/mainPage/columns/findAll.jsp</result>
+            <result name="toEdit">/WEB-INF/mainPage/columns/edit.jsp</result>
+        </action> 
+        
+        <!-- images -->
+        <action name="images_*" class="imagesAction" method="{1}">
+            <result name="findAll">/WEB-INF/mainPage/images/findAll.jsp</result>
+            <result name="toEdit">/WEB-INF/mainPage/images/edit.jsp</result>
+        </action>
+        
+        <!-- comment -->
+        <action name="comment_*" class="commentAction" method="{1}">
+            <result name="findAll">/WEB-INF/mainPage/comment/findAll.jsp</result>
+        </action>
+        
+        <!-- system -->
+        <action name="system_*" class="com.songm.news.action.SystemAction" method="{1}">
+            <result name="toSystem">/WEB-INF/mainPage/system.jsp</result>
+            <result name="toPageEdit">/WEB-INF/mainPage/pageEdit.jsp</result>
+        </action>
+        
+        <!-- before -->
+        <action name="*" class="beforeAction" method="{1}">   
+            <result name="toInfo">/WEB-INF/info.jsp</result>
+        </action>
+        
+    </package>
+    
+    <constant name="struts.action.extension" value="html"></constant><!-- action后缀为html -->
+    <constant name="struts.i18n.encoding" value="UTF-8" /><!-- POST提交编码 -->
+    <constant name="struts.multipart.maxSize" value="104857600"/><!-- 限制文件上传大小为10M -->
+    <!-- <constant name="struts.multipart.saveDir" value="/tmp"/> --><!-- 设置上传文件的临时存放地址 -->
+    <constant name="struts.devMode" value="true" /><!-- 开发者模式 -->
+    
+</struts>

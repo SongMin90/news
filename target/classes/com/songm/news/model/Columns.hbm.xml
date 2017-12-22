@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class name="com.songm.news.model.Columns" table="columns">
+         <id name="columns_id" column="columns_id">
+             <generator class="native"></generator>
+         </id>
+
+         <property name="columns_name" column="columns_name"></property>
+         <property name="columns_number" column="columns_number"></property>
+         
+  		<!-- 在栏目映射文件中，表示所有新闻
+        	使用set标签表示所有新闻
+        	name属性：栏目实体类里表示所有新闻的set集合名称
+        	cascade属性：级联操作属性
+        	inverse属性：关系维护(true放弃，false不放弃)
+        	batch-size属性：批量抓取优化，值越大，发送的sql语句越少
+        -->
+         <set name="setNews" cascade="save-update,delete" inverse="true" batch-size="10">
+             <!-- 一对多建表，有外键
+            	hibernate机制：双向维护外键，在一和多那一方都配置外键
+            	column属性：外键名称
+            -->
+            <key column="columns_news_id"></key>
+            <!-- 栏目所有新闻，class里是新闻实体类全路径 -->
+            <one-to-many class="com.songm.news.model.News"/>
+         </set>
+    </class>
+</hibernate-mapping>

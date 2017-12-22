@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:context="http://www.springframework.org/schema/context"
+    xmlns:aop="http://www.springframework.org/schema/aop"
+    xmlns:tx="http://www.springframework.org/schema/tx"
+    xsi:schemaLocation="
+	    http://www.springframework.org/schema/beans
+		http://www.springframework.org/schema/beans/spring-beans.xsd
+	    http://www.springframework.org/schema/context
+		http://www.springframework.org/schema/context/spring-context.xsd
+		http://www.springframework.org/schema/aop 
+		http://www.springframework.org/schema/aop/spring-aop.xsd
+		http://www.springframework.org/schema/tx 
+		http://www.springframework.org/schema/tx/spring-tx.xsd"> 
+	
+    <!-- 创建实现类对象 -->
+	<bean id="userDao" class="com.songm.news.dao.impl.UserDaoImpl">
+	    <!-- <property name="hibernateTemplate" ref="hibernateTemplate"></property> -->
+	    <property name="sessionFactory" ref="sessionFactory"></property>
+	</bean>
+	
+	<bean id="userService" class="com.songm.news.service.impl.UserServiceImpl">
+	    <property name="userDao" ref="userDao"></property>
+	    <property name="pageBean" ref="pageBean"></property>
+	    <property name="imagesService" ref="imagesService"></property><!-- 注入imagesService -->
+	</bean>
+	
+	<!-- 配置action对象 -->
+	<bean id="userAction" class="com.songm.news.action.UserAction" scope="prototype">
+	    <property name="userService" ref="userService"></property><!-- 注入userService -->
+	    <property name="newsService" ref="newsService"></property>
+	</bean>
+    	
+</beans>

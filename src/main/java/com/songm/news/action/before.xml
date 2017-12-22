@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:context="http://www.springframework.org/schema/context"
+    xmlns:aop="http://www.springframework.org/schema/aop"
+    xmlns:tx="http://www.springframework.org/schema/tx"
+    xsi:schemaLocation="
+	    http://www.springframework.org/schema/beans
+		http://www.springframework.org/schema/beans/spring-beans.xsd
+	    http://www.springframework.org/schema/context
+		http://www.springframework.org/schema/context/spring-context.xsd
+		http://www.springframework.org/schema/aop 
+		http://www.springframework.org/schema/aop/spring-aop.xsd
+		http://www.springframework.org/schema/tx 
+		http://www.springframework.org/schema/tx/spring-tx.xsd"> 
+
+	<bean id="beforeDao" class="com.songm.news.dao.impl.BeforeDaoImpl">
+	    <property name="sessionFactory" ref="sessionFactory"></property>
+	</bean>
+
+	<bean id="beforeService" class="com.songm.news.service.impl.BeforeServiceImpl">
+	    <property name="beforeDao" ref="beforeDao"></property>
+	    <property name="pageBean" ref="pageBean"></property>
+	</bean>
+	
+	<bean id="beforeAction" class="com.songm.news.action.BeforeAction" scope="prototype">
+	    <property name="beforeService" ref="beforeService"></property>
+	    <property name="commentService" ref="commentService"></property>
+	</bean>
+	
+</beans>

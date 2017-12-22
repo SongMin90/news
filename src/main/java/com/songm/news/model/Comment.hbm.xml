@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class name="com.songm.news.model.Comment" table="comment">
+         <id name="comment_id" column="comment_id">
+             <generator class="native"></generator>
+         </id>
+
+         <property name="comment_content" column="comment_content"></property>
+         <property name="comment_datetime" column="comment_datetime"></property>
+  
+         <many-to-one name="news" class="com.songm.news.model.News" column="news_comment_id"></many-to-one>
+         <many-to-one name="user" class="com.songm.news.model.User" column="user_comment_id"></many-to-one>  
+    </class>
+</hibernate-mapping>
